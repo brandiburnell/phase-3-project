@@ -89,6 +89,53 @@ class Hut:
         else:
             raise ValueError("Hut website URL must be a non-empty string")
         
+    ####################################
+                # methods #
+    ####################################
+    
+    @classmethod
+    def create_table(cls):
+        """ Create new table to persist attributes of Hut instances """
+        sql = """
+            CREATE TABLE IF NOT EXISTS huts (
+            id INTEGER PRIMARY KEY
+            name TEXT,
+            state TEXT,
+            system TEXT,
+            elevation INTEGER,
+            url TEXT)
+        """
+
+        CURSOR.execute(sql)
+        CONN.commit()
+    
+    @classmethod
+    def drop_table(cls):
+        """ Drop the table that persists Hut instances """
+        sql = """
+            DROP TABLE IF EXISTS huts;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+    
+    def save(self):
+        """ Insert a new row with hut attributes 
+        Update object id attribute using primary key value of new row
+        Save object in local dictionary using PK as dictionary key
+        """
+        sql = """
+            INSERT INTO huts (name, state, system, elevation, url)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.name, self.state, self.system, self.elevation, self.url))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+    
+    def update(self):
+        """ Update table row corresponding to current Hut instance """
+        
     
 
 

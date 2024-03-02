@@ -4,6 +4,7 @@
 # from models.__init__ import CONN, CURSOR
 from __init__ import CONN, CURSOR
 from amenity import Amenity
+from hut import Hut
 
 import ipdb
 
@@ -13,8 +14,6 @@ Amenity.create_table()
 hot_tub = Amenity.create("Hot tub", "a toasty tub")
 print(hot_tub)
 
-# hot_tub.save()
-# print(hot_tub)
 
 print(Amenity.get_all())
 
