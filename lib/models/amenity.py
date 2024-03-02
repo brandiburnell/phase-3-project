@@ -131,5 +131,22 @@ class Amenity:
         return [cls.instance_from_db(row) for row in rows]
         
     # find by id
-        
+    @classmethod
+    def find_by_id(cls, id):
+        """ Return an amenity corresponding to the given id """
+        sql = """
+            SELECT * 
+            FROM amenities 
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
     # other optional methods
+    @classmethod
+    def find_by_name(cls, id):
+        """ Return an amenity corresponding to the given id """
+        sql = """
+            SELECT *
+            FROM amenities
+            WHERE id = ? """
