@@ -135,6 +135,15 @@ class Hut:
     
     def update(self):
         """ Update table row corresponding to current Hut instance """
+        sql = """
+            UPDATE huts
+            SET name = ?, state = ?, system = ?, elevation = ?, url = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.state, self.system,
+                             self.elevation, self.url))
+    
+    
         
     
 
