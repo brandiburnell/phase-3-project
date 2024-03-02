@@ -76,6 +76,8 @@ class Amenity:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
+        #### ask tommy about this line of code ####
+        type(self).amenities[self.id] = self
     
     @classmethod
     def create(cls, name, description):
@@ -103,3 +105,31 @@ class Amenity:
         CURSOR.execute(sql, (self.id))
         CONN.commit()
     
+    @classmethod
+    def instance_from_db(cls, row):
+        """ Return a Amenity object having the values from the table row """
+        amenity = cls.amenities.get(row[0])
+        if amenity:
+            amenity.name = row[1]
+            amenity.description = row[2]
+        else:
+            amenity = cls(row[1], row[2])
+            amenity.id = row[0]
+            cls.amenities[amenity.id] = amenity
+        return amenity
+    
+    # get all
+    @classmethod
+    def get_all(cls):
+        """ Return a list containing a Amenity object per row in amenities """
+        sql = """
+            SELECT *
+            FROM amenities
+        """
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+        
+    # find by id
+        
+    # other optional methods

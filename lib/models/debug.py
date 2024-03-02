@@ -16,4 +16,6 @@ print(hot_tub)
 # hot_tub.save()
 # print(hot_tub)
 
+print(Amenity.get_all())
+
 ipdb.set_trace()
