@@ -162,8 +162,24 @@ class Hut:
         hut = cls(name, state, system, elevation, url)
         hut.save()
         return hut
-
     
+    @classmethod
+    def instance_from_db(cls, row):
+        """ Return employee object having attribute values from row """
+        hut = cls.all.get(row[0])
+        if hut:
+            hut.name = row[1]
+            hut.state = row[2]
+            hut.system = row[3]
+            hut.elevation = row[4]
+            hut.url = row[5]
+        else:
+            hut = cls(row[1], row[2], row[3], row[4], row[5])
+            hut.id = row[0]
+            cls.all[hut.id] = hut
+        return hut
+
+
     
 
 
