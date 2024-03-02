@@ -143,7 +143,23 @@ class Hut:
         CURSOR.execute(sql, (self.name, self.state, self.system,
                              self.elevation, self.url))
     
+    def delete(self):
+        """ Delete table row correspoding to current Hut instance """
+        sql = """
+            DELETE FROM huts
+            WEHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id))
+        CONN.commit()
+        
+        # why do you need to do type(self) first
+        del type(self).all[self.id]
+        self.id = None
     
+    
+
+    
+
         
     
 
