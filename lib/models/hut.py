@@ -156,7 +156,16 @@ class Hut:
         del type(self).all[self.id]
         self.id = None
     
+    @classmethod
+    def create(cls, name, state, system, elevation, url):
+        """ Initialize new instance to save the object to db """
+        hut = cls(name, state, system, elevation, url)
+        hut.save()
+        return hut
+
     
+    
+
 
     
 
