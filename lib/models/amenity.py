@@ -144,9 +144,13 @@ class Amenity:
 
     # other optional methods
     @classmethod
-    def find_by_name(cls, id):
+    def find_by_name(cls, name):
         """ Return an amenity corresponding to the given id """
         sql = """
             SELECT *
             FROM amenities
-            WHERE id = ? """
+            WHERE id = ? 
+        """
+
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
