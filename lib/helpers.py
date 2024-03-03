@@ -1,5 +1,6 @@
 # lib/helpers.py
 from models.hut import Hut
+from models.amenity import Amenity
 
 def print_hut_data():
     huts = Hut.get_all()
@@ -33,6 +34,27 @@ def delete_hut():
     else:
         print(f'Hut {name} not found')
 
+def print_amenities():
+    amenities = Amenity.get_all()
+    for amenity in amenities:
+        print(amenity)
+
+def find_amenity_by_name():
+    name = input("Enter the name of the amenity: ")
+    amenity = Amenity.find_by_name(name)
+    print(amenity) if amenity else print(f'Amenity {name} not found')
+
+def create_new_amenity():
+    print("Enter the new amenity's details below:")
+    name = input("Name of amenity: ")
+    description = input("Description of amenity: ")
+    try:
+        new_amenity = Amenity.create(name, description)
+        print(f'Success: {new_amenity}')
+    except Exception as exc:
+        print('Error creating amenity: ', exc)
+
+    
 def exit_program():
     print("Goodbye!")
     exit()

@@ -5,7 +5,10 @@ from helpers import (
     print_hut_data,
     find_hut_by_name,
     add_new_hut,
-    delete_hut
+    delete_hut,
+    print_amenities,
+    find_amenity_by_name,
+    create_new_amenity
 )
 
 
@@ -15,6 +18,7 @@ def main():
         choice = input("> ")
         if choice == "0":
             exit_program()
+        # hut menu
         elif choice == "1":
             while True:
                 hut_menu()
@@ -32,7 +36,19 @@ def main():
                 else:
                     print('Invalid menu choice!')
         elif choice == "2":
-            find_hut_by_name()
+            while True:
+                amenity_menu()
+                amenity_menu_choice = input("> ")
+                if amenity_menu_choice == "0":
+                    break
+                elif amenity_menu_choice == "1":
+                    print_amenities()
+                elif amenity_menu_choice == "2":
+                    find_amenity_by_name()
+                elif amenity_menu_choice == "3":
+                    create_new_amenity()
+                else:
+                    print('Invalid menu choice!')
         else:
             print("Invalid choice!")    
 
@@ -60,6 +76,15 @@ def hut_menu():
     print("4. Delete a hut")
     print("")
 
+def amenity_menu():
+    print("")
+    print("----- Amenity Menu -----")
+    print("0. Exit Amenity Menu")
+    print("1. View all amenity data")
+    print("2. Find an amenity by name")
+    print("3. Create a new amenity")
+    print("4. Delete an amenity")
+    print("")
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ class Amenity:
         self.description = description
 
     def __repr__(self):
-        return f"<Amenity {self.id} {self.name}, {self.description}"
+        return f"<Amenity {self.id} {self.name}, {self.description}>"
     
     ####################################
     # property definitions and setters #
