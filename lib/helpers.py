@@ -24,6 +24,15 @@ def add_new_hut():
     except Exception as exc:
         print('Error creating hut: ', exc)
 
+def delete_hut():
+    name = input("Enter the name of the hut: ")
+    hut = Hut.find_by_name(name)
+    if hut:
+        hut.delete()
+        print(f'Hut {name} deleted')
+    else:
+        print(f'Hut {name} not found')
+
 def exit_program():
     print("Goodbye!")
     exit()

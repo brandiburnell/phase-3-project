@@ -147,9 +147,9 @@ class Hut:
         """ Delete table row correspoding to current Hut instance """
         sql = """
             DELETE FROM huts
-            WEHERE id = ?
+            WHERE name = ?
         """
-        CURSOR.execute(sql, (self.id))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
         
         # why do you need to do type(self) first

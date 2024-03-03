@@ -4,7 +4,8 @@ from helpers import (
     exit_program,
     print_hut_data,
     find_hut_by_name,
-    add_new_hut
+    add_new_hut,
+    delete_hut
 )
 
 
@@ -26,10 +27,14 @@ def main():
                     find_hut_by_name()
                 elif hut_menu_choice == "3":
                     add_new_hut()
+                elif hut_menu_choice == "4":
+                    delete_hut()
+                else:
+                    print('Invalid menu choice!')
         elif choice == "2":
             find_hut_by_name()
         else:
-            print("Invalid choice")    
+            print("Invalid choice!")    
 
 
 def main_menu():
