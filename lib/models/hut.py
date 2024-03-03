@@ -1,4 +1,4 @@
-from __init__ import CURSOR, CONN
+from models.__init__ import CURSOR, CONN
 
 class Hut:
 
@@ -28,7 +28,7 @@ class Hut:
         self.url = url
 
     def __repr__(self):
-        pass
+        return f"<Hut {self.id}: {self.name}, {self.state}, {self.system}, {self.elevation}, {self.url}>"
 
     ####################################
     # property definitions and setters #
@@ -98,7 +98,7 @@ class Hut:
         """ Create new table to persist attributes of Hut instances """
         sql = """
             CREATE TABLE IF NOT EXISTS huts (
-            id INTEGER PRIMARY KEY
+            id INTEGER PRIMARY KEY,
             name TEXT,
             state TEXT,
             system TEXT,
@@ -179,6 +179,27 @@ class Hut:
             cls.all[hut.id] = hut
         return hut
 
+    @classmethod
+    def get_all(cls):
+        """ Return a list containing a Hut object per row in the table """
+        sql = """
+            SELECT *
+            FROM huts
+        """
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def find_by_name(cls, name):
+        """ Return hut with the matching name """
+        sql = """
+            SELECT *
+            FROM huts
+            WHERE name = ?
+        """
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
     
 

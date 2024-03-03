@@ -1,4 +1,4 @@
-from __init__ import CURSOR, CONN
+from models.__init__ import CURSOR, CONN
 
 class Amenity:
      
@@ -149,8 +149,15 @@ class Amenity:
         sql = """
             SELECT *
             FROM amenities
-            WHERE id = ? 
+            WHERE name = ? 
         """
 
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def huts(self):
+        """ Return list of huts associated with each amenity """
+        from models.hut import Hut
+        sql = """
+            SELECT * FROM amenities
+            WHERE amenity_id"""
