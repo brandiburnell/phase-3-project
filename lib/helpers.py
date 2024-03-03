@@ -11,6 +11,19 @@ def find_hut_by_name():
     hut = Hut.find_by_name(name)
     print(hut) if hut else print(f'Hut {name} not found')
 
+def add_new_hut():
+    print("Enter the new hut's details below:")
+    name = input("Hut name: ")
+    state = input("The state the hut is located in: ")
+    system = input("Hut system: ")
+    elevation = input("Hut elevation: ")
+    url = input("Hut website url: ")
+    try:
+        new_hut = Hut.create(name, state, system, int(elevation), url)
+        print(f'Success: {new_hut}')
+    except Exception as exc:
+        print('Error creating hut: ', exc)
+
 def exit_program():
     print("Goodbye!")
     exit()
