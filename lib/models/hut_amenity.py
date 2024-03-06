@@ -77,4 +77,48 @@ class HutAmenity:
 
     def update(self):
         """ Update the table row corresponding to the current Hut Amenity instance """
+        sql = """
+            UPDATE hut-amenities
+            SET hut-id = ?, amenity-id = ?
+            WHERE id = >
+        """
+        CURSOR.execute(sql, (self.hut_id, self.amenity_id))
+        CONN.commit()
+    
+    def delete(self):
+        """ Delete table row corresponding to current HutAmenity instance """
+        sql = """
+            DELETE FROM hut-amenities
+            WHERE id = ? 
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
 
+        del type(self).all[self.id]
+        self.id = None
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        """ Return a HutAmenity object having the values from this table row """
+        hut_amenity = cls.all.get(row[0])
+        if hut_amenity:
+            hut_amenity.hut_id = row[1]
+            hut_amenity.amenity_id = row[2]
+        else:
+            hut_amenity = cls(row[1], row[2])
+            hut_amenity.id = row[0]
+            cls.all[hut_amenity.id] = hut_amenity
+        return hut_amenity
+
+    @classmethod
+    def get_all(cls):
+        """ Return a list containg a HutAmenity object for each row in hut-amenities """
+        sql = """
+            SELECT *
+            FROM hut-amenities 
+        """
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+
+    

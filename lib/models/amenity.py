@@ -158,6 +158,7 @@ class Amenity:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    ##### idk bruh
     def huts(self):
         """ Return list of huts associated with each amenity """
         from models.hut import Hut
