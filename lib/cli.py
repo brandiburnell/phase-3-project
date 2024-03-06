@@ -8,7 +8,8 @@ from helpers import (
     delete_hut,
     print_amenities,
     find_amenity_by_name,
-    create_new_amenity
+    create_new_amenity,
+    delete_amenity
 )
 
 
@@ -47,6 +48,8 @@ def main():
                     find_amenity_by_name()
                 elif amenity_menu_choice == "3":
                     create_new_amenity()
+                elif amenity_menu_choice == "4":
+                    delete_amenity()
                 else:
                     print('Invalid menu choice!')
         else:

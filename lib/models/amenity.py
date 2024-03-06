@@ -100,10 +100,13 @@ class Amenity:
         """ Delete the table row corresponding to the current Amenity instance """
         sql = """
             DELETE FROM amenities
-            WHERE id = ?
+            WHERE name = ?
         """
-        CURSOR.execute(sql, (self.id))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
+
+        del type(self).amenities[self.id]
+        self.id = None
     
     @classmethod
     def instance_from_db(cls, row):

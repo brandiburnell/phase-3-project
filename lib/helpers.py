@@ -54,7 +54,15 @@ def create_new_amenity():
     except Exception as exc:
         print('Error creating amenity: ', exc)
 
-    
+def delete_amenity():
+    name = input("Enter the name of the amenity you would like to delete: ")
+    amenity = Amenity.find_by_name(name)
+    if amenity:
+        amenity.delete()
+        print(f'Amenity {name} has been deleted')
+    else:
+        print(f'Amenity {name} not found')
+
 def exit_program():
     print("Goodbye!")
     exit()
