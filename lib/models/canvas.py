@@ -1,9 +1,8 @@
-import hut
-import amenity
-import hut_amenities
+from models.hut import Hut
+from models.amenity import Amenity
+from models.hut_amenity import HutAmenity
 
-
-tomy = hut.Hut("tommy", "Washington", "boop", 123, "poeflijgoi")
+tomy = Hut("tommy", "Washington", "boop", 123, "poeflijgoi")
 tomy.state = "Colorado"
 print(tomy.state)
 tomy.state = "vermont"
@@ -12,11 +11,11 @@ print(tomy.state)
 tomy.elevation = 13466
 print(tomy.elevation)
 
-a = amenity.Amenity('hot tub', "a toasty tub to soak in")
+a = Amenity('hot tub', "a toasty tub to soak in")
 a.description = 'boop'
 print(a.description)
 
-h = hut_amenities.HutAmenities(1, 2)
+h = HutAmenity(1, 2)
 print(h.hut_id)
 h.hut_id = "hi"
 print(h.hut_id)
