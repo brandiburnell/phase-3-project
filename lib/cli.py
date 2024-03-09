@@ -9,7 +9,9 @@ from helpers import (
     print_amenities,
     find_amenity_by_name,
     create_new_amenity,
-    delete_amenity
+    delete_amenity,
+    add_amenity_to_hut,
+    print_hut_details
 )
 
 
@@ -29,11 +31,28 @@ def main():
                 elif hut_menu_choice == "1":
                     print_hut_data()
                 elif hut_menu_choice == "2":
-                    find_hut_by_name()
+                    hut_found = find_hut_by_name()
+                    if hut_found != None:
+                        while True:
+                            single_hut_menu()
+                            single_hut_menu_choice = input("> ")
+                            if single_hut_menu_choice == "0":
+                                break
+                            if single_hut_menu_choice == "1":
+                                print_hut_details(hut_found)
+                            
+
+
+                    # hut_name = input("get name")
+                    # hut = find_hut_by_name(name)
+                    # while:
+                    #     another function(hut)
                 elif hut_menu_choice == "3":
                     add_new_hut()
                 elif hut_menu_choice == "4":
                     delete_hut()
+                elif hut_menu_choice == "5":
+                    add_amenity_to_hut()
                 else:
                     print('Invalid menu choice!')
         elif choice == "2":
@@ -74,10 +93,20 @@ def hut_menu():
     print("----- Hut Menu -----")
     print("0. Exit Hut Menu")
     print("1. View all hut data")
-    print("2. Find a hut by name")
+    print("2. Select a hut by name")
     print("3. Create a new hut")
-    print("4. Delete a hut")
+    print("4. Delete a hut") # maybe delete this one
+    print("5. Add an amenity to a hut")
     print("")
+
+def single_hut_menu():
+    print("")
+    print("         ----- Edit Hut -----")
+    print("         0. Exit Edit Hut")
+    print("         1. Print hut details")
+    print("         2. Update hut details")
+    print("         3. Add an amenity to hut")
+    print("         4. Delete hut")
 
 def amenity_menu():
     print("")

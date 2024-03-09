@@ -1,4 +1,5 @@
 from models.__init__ import CURSOR, CONN
+from models.hut_amenity import HutAmenity
 
 class Hut:
 
@@ -200,8 +201,6 @@ class Hut:
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
-
-    
 
 
     

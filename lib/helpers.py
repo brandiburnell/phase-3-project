@@ -1,6 +1,7 @@
 # lib/helpers.py
 from models.hut import Hut
 from models.amenity import Amenity
+from models.hut_amenity import HutAmenity
 
 def print_hut_data():
     huts = Hut.get_all()
@@ -10,7 +11,13 @@ def print_hut_data():
 def find_hut_by_name():
     name = input("Enter the hut's name: ")
     hut = Hut.find_by_name(name)
-    print(hut) if hut else print(f'Hut {name} not found')
+    if hut:
+        return hut
+    else:
+        print(f'     Uh oh! Hut "{name}" not found :( ')
+        print("")
+        print('Please select an option below: ')
+        return None
 
 def add_new_hut():
     print("Enter the new hut's details below:")
@@ -63,6 +70,18 @@ def delete_amenity():
     else:
         print(f'Amenity {name} not found')
 
+def add_amenity_to_hut():
+    # update hut_amerity table with passe dhut id and new amenity id
+    amenity_name = input("Please enter the name of the amenity: ")
+    hut_amenity = Hut.add_amenity()
+
 def exit_program():
     print("Goodbye!")
     exit()
+
+def print_hut_details(hut):
+    print(f'             Hut name: {hut.name}')
+    print(f'             Hut state: {hut.state}')
+    print(f'             Hut system: {hut.system}')
+    print(f'             Hut elevation: {hut.elevation}')
+    print(f'             Hut website address: {hut.url}')
