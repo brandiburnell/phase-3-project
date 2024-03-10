@@ -24,7 +24,7 @@ class Amenity:
     @name.setter
     def name(self, name):
         if isinstance(name, str) and len(name):
-            self._name = name
+            self._name = name.lower()
         else:
             raise ValueError("Name must be a non-empty string")
     
@@ -35,7 +35,7 @@ class Amenity:
     @description.setter
     def description(self, description):
         if isinstance(description, str) and len(description):
-            self._description = description
+            self._description = description.lower()
         else:
             raise ValueError("Description must be a non-empty string")
         
@@ -154,7 +154,7 @@ class Amenity:
             WHERE name = ? 
         """
 
-        row = CURSOR.execute(sql, (name,)).fetchone()
+        row = CURSOR.execute(sql, (name.lower(),)).fetchone()
         return cls.instance_from_db(row) if row else None
     
     ##### idk bruh

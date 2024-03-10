@@ -42,7 +42,7 @@ class Hut:
     @name.setter
     def name(self, name):
         if isinstance(name, str) and len(name):
-            self._name = name
+            self._name = name.lower()
         else:
             raise ValueError("Name must be a non-empty string")
     
@@ -64,7 +64,7 @@ class Hut:
     @system.setter
     def system(self, system):
         if isinstance(system, str) and len(system):
-            self._system = system
+            self._system = system.lower()
         else:
             raise ValueError("System must be a non-empty string")
         
@@ -201,7 +201,7 @@ class Hut:
             FROM huts
             WHERE name = ?
         """
-        row = CURSOR.execute(sql, (name,)).fetchone()
+        row = CURSOR.execute(sql, (name.lower(),)).fetchone()
         return cls.instance_from_db(row) if row else None
     
     @classmethod

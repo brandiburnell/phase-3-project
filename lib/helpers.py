@@ -7,16 +7,18 @@ from models.hut_amenity import HutAmenity
 def print_hut_data():
     huts = Hut.get_all()
     for hut in huts:
-        print(hut)
+        print(f'•{hut.name.title()}, {hut.system.title()}, {hut.state}.')
+        print("  Elevation: ${:,}".format(hut.elevation) + f'ft, Website: {hut.url}•')
+        print("")
 
 def find_hut_by_name():
-    name = input("Enter the hut's name: ")
+    name = input("Enter the hut's name: ").lower()
     hut = Hut.find_by_name(name)
     if hut:
         return hut
     else:
         print("")
-        print(f'     Uh oh! Hut "{name}" not found :( ')
+        print(f'     Uh oh! Hut "{name.title()}" not found :( ')
         print("")
         print('Please select an option below: ')
         return None
@@ -30,7 +32,7 @@ def add_new_hut():
     url = input("Hut website url: ")
     try:
         new_hut = Hut.create(name, state, system, int(elevation), url)
-        print(f'Success: {new_hut}')
+        print(f'Success: {new_hut.name.title()} has been created!')
     except Exception as exc:
         print('Error creating hut: ', exc)
 
@@ -39,14 +41,14 @@ def delete_hut():
     hut = Hut.find_by_name(name)
     if hut:
         hut.delete()
-        print(f'Hut {name} deleted')
+        print(f'Hut {name.title()} deleted')
     else:
-        print(f'Hut {name} not found')
+        print(f'Hut {name.title()} not found')
 
 def print_amenities():
     amenities = Amenity.get_all()
     for amenity in amenities:
-        print(f'             Amenity name: {amenity.name}')
+        print(f'             Amenity name: {amenity.name.title()}')
         print(f'             Amenity descripton: {amenity.description}')
         print("")
 
@@ -58,7 +60,7 @@ def find_amenity_by_name():
         return amenity
     else:
         print("")
-        print(f'     Uh oh! Amenity "{name}" not found :( ')
+        print(f'     Uh oh! Amenity "{name.title()}" not found :( ')
         print("")
         print('Please select an option below: ')
         return None
@@ -69,19 +71,20 @@ def create_new_amenity():
     description = input("         Description of amenity: ")
     try:
         new_amenity = Amenity.create(name, description)
-        print(f'         Success: {new_amenity.name}, {new_amenity.description}')
+        print(f'         Success: {new_amenity.name.title()}, {new_amenity.description}')
         return new_amenity
     except Exception as exc:
-        print('        Error creating amenity: ', exc)
+        print('         Error creating amenity: ', exc)
 
 def delete_amenity():
     name = input("Enter the name of the amenity you would like to delete: ")
     amenity = Amenity.find_by_name(name)
     if amenity:
         amenity.delete()
-        print(f'Amenity {name} has been deleted')
+        print(f'Amenity {name.title()} has been deleted')
+        
     else:
-        print(f'Amenity {name} not found')
+        print(f'Amenity {name.title()} not found')
 
 def add_amenity_to_hut(hut):
     print('         Enter "existing" if you would like to add an existing amenity to the hut.')
@@ -92,41 +95,50 @@ def add_amenity_to_hut(hut):
         print_amenities()
         amenity_chosen = input("        Enter the name of the amenity you would like to add to the hut: ")
         amenity = Amenity.find_by_name(amenity_chosen)
-        new_hut_amenity = HutAmenity.create(hut.id, amenity.id)
-        print("")
-        print(f'            {amenity.name} has been added to {hut.name}')
+        try:
+            HutAmenity.create(hut.id, amenity.id)
+            print("")
+            print(f'            {amenity.name.title()} has been added to {hut.name.title()}')
+        except Exception as exc:
+            print('            Error adding amenity: ', exc)
     elif new_or_existing == "new":
         amenity = create_new_amenity()
-        HutAmenity.create(hut.id, amenity.id)
-        print("")
-        print(f'            {amenity.name} has been added to {hut.name}')
+        try:
+            HutAmenity.create(hut.id, amenity.id)
+            print("")
+            print(f'            {amenity.name.title()} has been added to {hut.name.title()}')
+        except Exception as exc:
+            print('            Error adding amenity: ', exc)
     else:
         print("             Invalid choice")
 
 def delete_amenity_from_hut(hut):
     amenity_name = input('         Enter the name of the amenity you woule like to delete from the hut: ')
     amenity = Amenity.find_by_name(amenity_name)
-    sql = """
-        DELETE 
-        FROM hut_amenities
-        WHERE hut_id = ? 
-            AND amenity_id = ?
-    """
-    CURSOR.execute(sql, (hut.id, amenity.id))
-    CONN.commit()
+    if amenity:
+        sql = """
+            DELETE 
+            FROM hut_amenities
+            WHERE hut_id = ? 
+                AND amenity_id = ?
+        """
+        CURSOR.execute(sql, (hut.id, amenity.id))
+        CONN.commit()
 
-    print("")
-    print(f'            {amenity.name} has been removed from {hut.name}')
+        print("")
+        print(f'            {amenity.name.title()} has been removed from {hut.name.title()}')
+    else:
+        print(f'            {amenity.name.title()} not found. Please try again')
 
 def exit_program():
     print("Goodbye!")
     exit()
 
 def print_hut_details(hut):
-    print(f'             Hut name: {hut.name}')
+    print(f'             Hut name: {hut.name.title()}')
     print(f'             Hut state: {hut.state}')
-    print(f'             Hut system: {hut.system}')
-    print(f'             Hut elevation: {hut.elevation}')
+    print(f'             Hut system: {hut.system}.title()')
+    print("             Hut Elevation: ${:,}".format(hut.elevation))
     print(f'             Hut website address: {hut.url}')
 
 def update_hut_details(hut):
@@ -137,20 +149,42 @@ def update_hut_details(hut):
     system = input("        Please enter the new hut system: ")    
     elevation = input("        Please enter the new elevation: ")
     url = input("        Please enter the new website address: ")
+    print("")
+    error_counter = 0
     if name != "":
-        hut.name = name
+        try:
+            hut.name = name
+        except Exception as exc:
+            print('        Error updating hut name: ', exc)
+            error_counter += 1
     if state != "":
-        hut.state = state
+        try:
+            hut.state = state
+        except Exception as exc:
+            print('        Error updating hut state: ', exc)
+            error_counter += 1
     if system != "":
-        hut.system = system
+        try:
+            hut.system = system
+        except Exception as exc:
+            print('        Error updating hut system: ', exc)
+            error_counter += 1
     if elevation!= "":
-        hut.elevation = int(elevation)
+        try:
+            hut.elevation = int(elevation)
+        except Exception as exc:
+            print('        Error updating hut elevation: ', exc)
+            error_counter += 1
     if url != "":
-        hut.url = url
+        try:
+            hut.url = url
+        except Exception as exc:
+            print('        Error updating hut url: ', exc)
+            error_counter += 1
 
     hut.update()
-    print("")
-    print(f'         Hut "{hut.name}" has been successfully updated!')
+    if error_counter == 0:
+        print(f'         Hut "{hut.name}" has been successfully updated!')
 
 def print_hut_ameities(hut):
     # query hut_amenities for rows that match the given hut id
@@ -164,7 +198,7 @@ def print_hut_ameities(hut):
         print("")
         for row in rows:
             amenity = Amenity.find_by_id(row[0])
-            print(f'             {amenity.name}: {amenity.description}')
+            print(f'             {amenity.name.title()}: {amenity.description}')
     else:
         print("")
         print('             No amenities found. Sounds like camping!')
@@ -177,10 +211,10 @@ def delete_hut(hut):
     """
     CURSOR.execute(sql, (hut.id,))
     hut.delete()
-    print(f'         {hut.name} has been deleted')
+    print(f'         {hut.name.title()} has been deleted')
 
 def print_amenity_details(amenity):
-    print(f'             Amenity name: {amenity.name}')
+    print(f'             Amenity name: {amenity.name.title()}')
     print(f'             Amenity description: {amenity.description}')
 
 def update_amenity_details(amenity):
@@ -188,13 +222,23 @@ def update_amenity_details(amenity):
     print("        If you would not like to change the amenity attribute, press enter to move onto the next option.")
     name = input("        Please enter the new amenity name: ")
     description = input("        Please enter the new description: ")
-    if name != "":
-        amenity.name = name
-    if description != "":
-        amenity.description = description
-    amenity.update()
     print("")
-    print(f'         Amenity "{amenity.name}" has been successfully updated!')
+    error_counter = 0
+    if name != "":
+        try:
+            amenity.name = name
+        except Exception as exc:
+            print('        Error updating amenity name: ', exc)
+            error_counter += 1
+    if description != "":
+        try:
+            amenity.description = description
+        except Exception as exc:
+            print('        Error updating amenity description: ', exc)
+            error_counter += 1
+    amenity.update()
+    if error_counter == 0:
+        print(f'         Amenity "{amenity.name.title()}" has been successfully updated!')
 
 def print_huts_with_chosen_amenity(amenity):
     # query hut_amenities for rows that match the given amenity id
@@ -208,7 +252,7 @@ def print_huts_with_chosen_amenity(amenity):
         print("")
         for row in rows:
             hut = Hut.find_by_id(row[0])
-            print(f'             {hut.name}: {hut.state}, {hut.system}')
+            print(f'             {hut.name.title()}: {hut.state}, {hut.system.title()}')
     else:
         print("")
         print('             No huts with this amenity found. Keep dreaming!')
@@ -221,4 +265,4 @@ def delete_amenity(amenity):
     """
     CURSOR.execute(sql, (amenity.id,))
     amenity.delete()
-    print(f'         {amenity.name} has been deleted')
+    print(f'         {amenity.name.title()} has been deleted')

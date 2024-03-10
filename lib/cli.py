@@ -40,10 +40,13 @@ def main():
                     break
                 elif hut_menu_choice == "1":
                     print_hut_data()
+                # individual hut menu
                 elif hut_menu_choice == "2":
                     hut_found = find_hut_by_name()
                     if hut_found != None:
                         while True:
+                            print("")
+                            print(f'         ----- Edit {hut_found.name.capitalize()} -----')
                             single_hut_menu()
                             single_hut_menu_choice = input("         > ")
                             if single_hut_menu_choice == "0":
@@ -61,12 +64,17 @@ def main():
                                 delete_amenity_from_hut(hut_found)
                             elif single_hut_menu_choice == "6":
                                 delete_hut(hut_found)
+                            elif single_hut_menu_choice == "7":
+                                exit_program()
                             else:
                                 print('Invalid menu choice. Try again!')
                 elif hut_menu_choice == "3":
                     add_new_hut()
+                elif hut_menu_choice == "4":
+                    exit_program()
                 else:
                     print('Invalid menu choice!')
+        # amenity menu
         elif choice == "2":
             while True:
                 amenity_menu()
@@ -75,10 +83,13 @@ def main():
                     break
                 elif amenity_menu_choice == "1":
                     print_amenities()
+                # specific amenity menu
                 elif amenity_menu_choice == "2":
                     amenity_found = find_amenity_by_name()
                     if amenity_found != None:
                         while True:
+                            print("")
+                            print(f'         ----- Edit {amenity_found.name.capitalize()} Amenity -----')
                             single_amenity_menu()
                             single_amenity_menu_choice = input("         > ")
                             if single_amenity_menu_choice == "0":
@@ -91,10 +102,14 @@ def main():
                                 print_huts_with_chosen_amenity(amenity_found)
                             elif single_amenity_menu_choice == "4":
                                 delete_amenity(amenity_found)
+                            elif single_amenity_menu_choice == "5":
+                                exit_program()
                             else:
                                 print('Invalid menu choice. Try again!')
                 elif amenity_menu_choice == "3":
                     create_new_amenity()
+                elif amenity_menu_choice == "4":
+                    exit_program()
                 else:
                     print('Invalid menu choice!')
         else:
@@ -113,7 +128,6 @@ def main_menu():
     print("***********************************")
     print("")
 
-
 def hut_menu():
     print("")
     print("----- Hut Menu -----")
@@ -121,11 +135,10 @@ def hut_menu():
     print("1. View all hut data")
     print("2. Select a hut by name")
     print("3. Create a new hut")
+    print("4. Exit program")
     print("")
 
 def single_hut_menu():
-    print("")
-    print("         ----- Edit Hut -----")
     print("         0. Exit Edit Hut")
     print("         1. Print hut details")
     print("         2. Update hut details")
@@ -133,24 +146,27 @@ def single_hut_menu():
     print("         4. Add an amenity to hut")
     print("         5. Remove amenity from hut")
     print("         6. Delete hut")
+    print("         7. Exit program")
+    print("")
 
 def amenity_menu():
     print("")
     print("----- Amenity Menu -----")
     print("0. Exit Amenity Menu")
     print("1. View all amenity data")
-    print("2. Find an amenity by name")
+    print("2. Select an amenity by name")
     print("3. Create a new amenity")
+    print("4. Exit program")
     print("")
 
 def single_amenity_menu():
-    print("")
-    print("         ----- Edit Amenity -----")
     print("         0. Exit Edit Amenity")
     print("         1. Print amenity details")
     print("         2. Update amenity details")
     print("         3. View huts with this amenitiy")
     print("         4. Delete amenity")
+    print("         5. Exit program")
+    print("")
 
 if __name__ == "__main__":
     main()
