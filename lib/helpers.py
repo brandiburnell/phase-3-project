@@ -8,7 +8,7 @@ def print_hut_data():
     huts = Hut.get_all()
     for hut in huts:
         print(f'•{hut.name.title()}, {hut.system.title()}, {hut.state}.')
-        print("  Elevation: ${:,}".format(hut.elevation) + f'ft, Website: {hut.url}•')
+        print("  Elevation: {:,}".format(hut.elevation) + f' ft, Website: {hut.url}•')
         print("")
 
 def find_hut_by_name():
@@ -100,7 +100,8 @@ def add_amenity_to_hut(hut):
             print("")
             print(f'            {amenity.name.title()} has been added to {hut.name.title()}')
         except Exception as exc:
-            print('            Error adding amenity: ', exc)
+            print("")
+            print(f'             Amenity "{amenity_chosen}" not found')
     elif new_or_existing == "new":
         amenity = create_new_amenity()
         try:
@@ -108,14 +109,16 @@ def add_amenity_to_hut(hut):
             print("")
             print(f'            {amenity.name.title()} has been added to {hut.name.title()}')
         except Exception as exc:
-            print('            Error adding amenity: ', exc)
+            print("")
+            print('             Error adding amenity: ', exc)
     else:
+        print("")
         print("             Invalid choice")
 
 def delete_amenity_from_hut(hut):
     amenity_name = input('         Enter the name of the amenity you woule like to delete from the hut: ')
-    amenity = Amenity.find_by_name(amenity_name)
-    if amenity:
+    try:
+        amenity = Amenity.find_by_name(amenity_name)
         sql = """
             DELETE 
             FROM hut_amenities
@@ -127,8 +130,8 @@ def delete_amenity_from_hut(hut):
 
         print("")
         print(f'            {amenity.name.title()} has been removed from {hut.name.title()}')
-    else:
-        print(f'            {amenity.name.title()} not found. Please try again')
+    except Exception as exc:
+        print(f'            "{amenity_name}" not found. Please try again')
 
 def exit_program():
     print("Goodbye!")
@@ -137,8 +140,8 @@ def exit_program():
 def print_hut_details(hut):
     print(f'             Hut name: {hut.name.title()}')
     print(f'             Hut state: {hut.state}')
-    print(f'             Hut system: {hut.system}.title()')
-    print("             Hut Elevation: ${:,}".format(hut.elevation))
+    print(f'             Hut system: {hut.system.title()}')
+    print("             Hut Elevation: {:,}".format(hut.elevation))
     print(f'             Hut website address: {hut.url}')
 
 def update_hut_details(hut):
