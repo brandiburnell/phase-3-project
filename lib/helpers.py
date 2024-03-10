@@ -76,10 +76,28 @@ def delete_amenity():
         print(f'Amenity {name} not found')
 
 def add_amenity_to_hut(hut):
-    print('function')
-    # update hut_amerity table with passe dhut id and new amenity id
-    # amenity_name = input("Please enter the name of the amenity: ")
-    # hut_amenity = Hut.add_amenity()
+    print('         Enter "existing" if you would like to add an existing amenity to the hut.')
+    print('         Enter "new" if you would like to add a new amenity to the hut.')
+    new_or_existing = input("         > ").lower()
+    if new_or_existing == "existing":
+        print("         Please choose an amenity to add from the list below: ")
+        print_amenities()
+        amenity_chosen = input("        Enter the name of the amenity you would like to add to the hut: ")
+        amenity = Amenity.find_by_name(amenity_chosen)
+        new_hut_amenity = HutAmenity.create(hut.id, amenity.id)
+        print("")
+        print(f'        {amenity.name} has been added to {hut.name}')
+    if new_or_existing == "new":
+        amenity = create_new_amenity()
+        HutAmenity.create(hut.id, amenity.id)
+        print("")
+        print(f'        {amenity.name} has been added to {hut.name}')
+
+def delete_amenity_from_hut(hut):
+    sql = """
+        DELETE FROM hut_amenities
+        WHERE hut_id = ? """
+    ### ask tommy how to delete by multiple parameters
 
 def exit_program():
     print("Goodbye!")
@@ -124,11 +142,12 @@ def print_hut_ameities(hut):
         """
     rows = CURSOR.execute(sql, (hut.id,)).fetchall()
     if len(rows):
+        print("")
         for row in rows:
             amenity = Amenity.find_by_id(row[0])
-            print(f'         {amenity.name}: {amenity.description}')
+            print(f'             {amenity.name}: {amenity.description}')
     else:
         print("")
-        print('         No amenities found. Sounds like camping!')
+        print('             No amenities found. Sounds like camping!')
 
 

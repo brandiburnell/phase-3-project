@@ -50,19 +50,6 @@ def main():
                                 print_hut_ameities(hut_found)
                             ###### ASK TOMMY HOW TO HANDLE ERRORS
                             elif single_hut_menu_choice == "4":
-                                print('         Enter "existing" if you would like to add an existing amenity to the hut.')
-                                print('         Enter "new" if you would like to add a new amenity to the hut.')
-                                new_or_existing = input("         > ").lower()
-                                if new_or_existing == "existing":
-                                    print("         Please choose an amenity to add from the list below: ")
-                                    print_amenities()
-                                    amenity_chosen = input("        Enter the name of the amenity you would like to add to the hut: ")
-                                    amenity = Amenity.find_by_name(amenity_chosen)
-                                    new_hut_amenity = HutAmenity.create(hut_found.id, amenity.id)
-                                if new_or_existing == "new":
-                                    amenity = create_new_amenity()
-                                    new_hut_amenity = HutAmenity.create(hut_found.id, amenity.id)
-
                                 add_amenity_to_hut(hut_found)
                             else:
                                 print('Invalid menu choice. Try again!')
