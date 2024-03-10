@@ -1,4 +1,6 @@
 # lib/cli.py
+from models.hut_amenity import HutAmenity
+from models.amenity import Amenity
 
 from helpers import (
     exit_program,
@@ -11,7 +13,9 @@ from helpers import (
     create_new_amenity,
     delete_amenity,
     add_amenity_to_hut,
-    print_hut_details
+    print_hut_details,
+    update_hut_details,
+    print_hut_ameities
 )
 
 
@@ -35,18 +39,34 @@ def main():
                     if hut_found != None:
                         while True:
                             single_hut_menu()
-                            single_hut_menu_choice = input("> ")
+                            single_hut_menu_choice = input("         > ")
                             if single_hut_menu_choice == "0":
                                 break
-                            if single_hut_menu_choice == "1":
+                            elif single_hut_menu_choice == "1":
                                 print_hut_details(hut_found)
-                            
+                            elif single_hut_menu_choice == "2":
+                                update_hut_details(hut_found)
+                            elif single_hut_menu_choice == "3":
+                                print_hut_ameities(hut_found)
+                            ###### ASK TOMMY HOW TO HANDLE ERRORS
+                            elif single_hut_menu_choice == "4":
+                                print('         Enter "existing" if you would like to add an existing amenity to the hut.')
+                                print('         Enter "new" if you would like to add a new amenity to the hut.')
+                                new_or_existing = input("         > ").lower()
+                                if new_or_existing == "existing":
+                                    print("         Please choose an amenity to add from the list below: ")
+                                    print_amenities()
+                                    amenity_chosen = input("        Enter the name of the amenity you would like to add to the hut: ")
+                                    amenity = Amenity.find_by_name(amenity_chosen)
+                                    new_hut_amenity = HutAmenity.create(hut_found.id, amenity.id)
+                                if new_or_existing == "new":
+                                    amenity = create_new_amenity()
+                                    new_hut_amenity = HutAmenity.create(hut_found.id, amenity.id)
 
+                                add_amenity_to_hut(hut_found)
+                            else:
+                                print('Invalid menu choice. Try again!')
 
-                    # hut_name = input("get name")
-                    # hut = find_hut_by_name(name)
-                    # while:
-                    #     another function(hut)
                 elif hut_menu_choice == "3":
                     add_new_hut()
                 elif hut_menu_choice == "4":
@@ -105,8 +125,9 @@ def single_hut_menu():
     print("         0. Exit Edit Hut")
     print("         1. Print hut details")
     print("         2. Update hut details")
-    print("         3. Add an amenity to hut")
-    print("         4. Delete hut")
+    print("         3. View hut amenities")
+    print("         4. Add an amenity to hut")
+    print("         5. Delete hut")
 
 def amenity_menu():
     print("")

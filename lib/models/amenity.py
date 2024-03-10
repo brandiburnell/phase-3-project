@@ -71,7 +71,6 @@ class Amenity:
             INSERT INTO amenities (name, description)
             VALUES (?, ?)
         """
-
         CURSOR.execute(sql, (self.name, self.description))
         CONN.commit()
 
@@ -148,7 +147,7 @@ class Amenity:
     # other optional methods
     @classmethod
     def find_by_name(cls, name):
-        """ Return an amenity corresponding to the given id """
+        """ Return an amenity corresponding to the given name """
         sql = """
             SELECT *
             FROM amenities

@@ -128,6 +128,7 @@ class Hut:
             INSERT INTO huts (name, state, system, elevation, url)
             VALUES (?, ?, ?, ?, ?)
         """
+        print(type(self.name), type(self.elevation))
         CURSOR.execute(sql, (self.name, self.state, self.system, self.elevation, self.url))
         CONN.commit()
 
@@ -142,7 +143,8 @@ class Hut:
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.name, self.state, self.system,
-                             self.elevation, self.url))
+                             self.elevation, self.url, self.id))
+        CONN.commit()
     
     def delete(self):
         """ Delete table row correspoding to current Hut instance """

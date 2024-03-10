@@ -49,17 +49,28 @@ class HutAmenity:
     def create_table(cls):
         """ create a new table to persist arrtibutes of HutAmenity instances """
         sql = """
-            CREATE TABLE IF NOT EXISTS hut-amenities
+            CREATE TABLE IF NOT EXISTS hut_amenities (
+            id INTEGER PRIMARY KEY,
+            hut_id INTEGER,
+            amenity_id INTEGER)
         """
-        CURSOR.execute()
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        """ Drop the table that persists Hut instances """
+        sql = """
+            DROP TABLE IF EXISTS hut_amenities;
+        """
+        CURSOR.execute(sql)
         CONN.commit()
     
-    @classmethod
     def save(self):
         """ Inser a new row with hut amenity information. Update id attribute using
         primary key value of new row """
         sql = """
-            INSERT INTO hut-amenities (hut-id, amenity-id)
+            INSERT INTO hut_amenities (hut_id, amenity_id)
             VALUES (?, ?)
         """
         CURSOR.execute(sql, (self.hut_id, self.amenity_id))
@@ -78,17 +89,17 @@ class HutAmenity:
     def update(self):
         """ Update the table row corresponding to the current Hut Amenity instance """
         sql = """
-            UPDATE hut-amenities
-            SET hut-id = ?, amenity-id = ?
-            WHERE id = >
+            UPDATE hut_amenities
+            SET hut_id = ?, amenity_id = ?
+            WHERE id = ?
         """
-        CURSOR.execute(sql, (self.hut_id, self.amenity_id))
+        CURSOR.execute(sql, (self.hut_id, self.amenity_id, self.id))
         CONN.commit()
     
     def delete(self):
         """ Delete table row corresponding to current HutAmenity instance """
         sql = """
-            DELETE FROM hut-amenities
+            DELETE FROM hut_amenities
             WHERE id = ? 
         """
         CURSOR.execute(sql, (self.id,))
@@ -115,10 +126,11 @@ class HutAmenity:
         """ Return a list containg a HutAmenity object for each row in hut-amenities """
         sql = """
             SELECT *
-            FROM hut-amenities 
+            FROM hut_amenities 
         """
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
-
-    
+     
+    def print(self):
+        print(type(self.amenity_id))

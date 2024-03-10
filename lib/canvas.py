@@ -19,3 +19,4 @@ h = HutAmenity(1, 2)
 print(h.hut_id)
 
 
+
