@@ -92,7 +92,7 @@ class Amenity:
             SET name = ?, description = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.description))
+        CURSOR.execute(sql, (self.name, self.description, self.id))
         CONN.commit()
     
     def delete(self):

@@ -46,7 +46,7 @@ def main():
                     if hut_found != None:
                         while True:
                             print("")
-                            print(f'         ----- Edit {hut_found.name.capitalize()} -----')
+                            print(f'         ----- Edit {hut_found.name.title()} -----')
                             single_hut_menu()
                             single_hut_menu_choice = input("         > ")
                             if single_hut_menu_choice == "0":
@@ -89,7 +89,7 @@ def main():
                     if amenity_found != None:
                         while True:
                             print("")
-                            print(f'         ----- Edit {amenity_found.name.capitalize()} Amenity -----')
+                            print(f'         ----- Edit {amenity_found.name.title()} Amenity -----')
                             single_amenity_menu()
                             single_amenity_menu_choice = input("         > ")
                             if single_amenity_menu_choice == "0":

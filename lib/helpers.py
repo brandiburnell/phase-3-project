@@ -184,7 +184,7 @@ def update_hut_details(hut):
 
     hut.update()
     if error_counter == 0:
-        print(f'         Hut "{hut.name}" has been successfully updated!')
+        print(f'         Hut "{hut.name.title()}" has been successfully updated!')
 
 def print_hut_ameities(hut):
     # query hut_amenities for rows that match the given hut id

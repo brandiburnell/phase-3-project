@@ -128,7 +128,6 @@ class Hut:
             INSERT INTO huts (name, state, system, elevation, url)
             VALUES (?, ?, ?, ?, ?)
         """
-        print(type(self.name), type(self.elevation))
         CURSOR.execute(sql, (self.name, self.state, self.system, self.elevation, self.url))
         CONN.commit()
 
