@@ -15,7 +15,13 @@ from helpers import (
     add_amenity_to_hut,
     print_hut_details,
     update_hut_details,
-    print_hut_ameities
+    print_hut_ameities,
+    delete_amenity_from_hut,
+    delete_hut,
+    print_amenity_details,
+    update_amenity_details,
+    print_huts_with_chosen_amenity,
+    delete_amenity
 )
 
 
@@ -51,15 +57,14 @@ def main():
                             ###### ASK TOMMY HOW TO HANDLE ERRORS
                             elif single_hut_menu_choice == "4":
                                 add_amenity_to_hut(hut_found)
+                            elif single_hut_menu_choice == "5":
+                                delete_amenity_from_hut(hut_found)
+                            elif single_hut_menu_choice == "6":
+                                delete_hut(hut_found)
                             else:
                                 print('Invalid menu choice. Try again!')
-
                 elif hut_menu_choice == "3":
                     add_new_hut()
-                elif hut_menu_choice == "4":
-                    delete_hut()
-                elif hut_menu_choice == "5":
-                    add_amenity_to_hut()
                 else:
                     print('Invalid menu choice!')
         elif choice == "2":
@@ -71,11 +76,25 @@ def main():
                 elif amenity_menu_choice == "1":
                     print_amenities()
                 elif amenity_menu_choice == "2":
-                    find_amenity_by_name()
+                    amenity_found = find_amenity_by_name()
+                    if amenity_found != None:
+                        while True:
+                            single_amenity_menu()
+                            single_amenity_menu_choice = input("         > ")
+                            if single_amenity_menu_choice == "0":
+                                break
+                            elif single_amenity_menu_choice == "1":
+                                print_amenity_details(amenity_found)
+                            elif single_amenity_menu_choice == "2":
+                                update_amenity_details(amenity_found)
+                            elif single_amenity_menu_choice == "3":
+                                print_huts_with_chosen_amenity(amenity_found)
+                            elif single_amenity_menu_choice == "4":
+                                delete_amenity(amenity_found)
+                            else:
+                                print('Invalid menu choice. Try again!')
                 elif amenity_menu_choice == "3":
                     create_new_amenity()
-                elif amenity_menu_choice == "4":
-                    delete_amenity()
                 else:
                     print('Invalid menu choice!')
         else:
@@ -102,8 +121,6 @@ def hut_menu():
     print("1. View all hut data")
     print("2. Select a hut by name")
     print("3. Create a new hut")
-    print("4. Delete a hut") # maybe delete this one
-    print("5. Add an amenity to a hut")
     print("")
 
 def single_hut_menu():
@@ -114,7 +131,8 @@ def single_hut_menu():
     print("         2. Update hut details")
     print("         3. View hut amenities")
     print("         4. Add an amenity to hut")
-    print("         5. Delete hut")
+    print("         5. Remove amenity from hut")
+    print("         6. Delete hut")
 
 def amenity_menu():
     print("")
@@ -123,9 +141,16 @@ def amenity_menu():
     print("1. View all amenity data")
     print("2. Find an amenity by name")
     print("3. Create a new amenity")
-    print("4. Delete an amenity")
     print("")
 
+def single_amenity_menu():
+    print("")
+    print("         ----- Edit Amenity -----")
+    print("         0. Exit Edit Amenity")
+    print("         1. Print amenity details")
+    print("         2. Update amenity details")
+    print("         3. View huts with this amenitiy")
+    print("         4. Delete amenity")
 
 if __name__ == "__main__":
     main()

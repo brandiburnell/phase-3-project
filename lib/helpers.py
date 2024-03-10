@@ -53,7 +53,15 @@ def print_amenities():
 def find_amenity_by_name():
     name = input("Enter the name of the amenity: ")
     amenity = Amenity.find_by_name(name)
-    print(amenity) if amenity else print(f'Amenity {name} not found')
+    
+    if amenity:
+        return amenity
+    else:
+        print("")
+        print(f'     Uh oh! Amenity "{name}" not found :( ')
+        print("")
+        print('Please select an option below: ')
+        return None
 
 def create_new_amenity():
     print("         Enter the new amenity's details below:")
@@ -86,18 +94,29 @@ def add_amenity_to_hut(hut):
         amenity = Amenity.find_by_name(amenity_chosen)
         new_hut_amenity = HutAmenity.create(hut.id, amenity.id)
         print("")
-        print(f'        {amenity.name} has been added to {hut.name}')
-    if new_or_existing == "new":
+        print(f'            {amenity.name} has been added to {hut.name}')
+    elif new_or_existing == "new":
         amenity = create_new_amenity()
         HutAmenity.create(hut.id, amenity.id)
         print("")
-        print(f'        {amenity.name} has been added to {hut.name}')
+        print(f'            {amenity.name} has been added to {hut.name}')
+    else:
+        print("             Invalid choice")
 
 def delete_amenity_from_hut(hut):
+    amenity_name = input('         Enter the name of the amenity you woule like to delete from the hut: ')
+    amenity = Amenity.find_by_name(amenity_name)
     sql = """
-        DELETE FROM hut_amenities
-        WHERE hut_id = ? """
-    ### ask tommy how to delete by multiple parameters
+        DELETE 
+        FROM hut_amenities
+        WHERE hut_id = ? 
+            AND amenity_id = ?
+    """
+    CURSOR.execute(sql, (hut.id, amenity.id))
+    CONN.commit()
+
+    print("")
+    print(f'            {amenity.name} has been removed from {hut.name}')
 
 def exit_program():
     print("Goodbye!")
@@ -150,4 +169,56 @@ def print_hut_ameities(hut):
         print("")
         print('             No amenities found. Sounds like camping!')
 
+def delete_hut(hut):
+    sql = """
+    DELETE
+    FROM hut_amenities
+    WHERE hut_id = ?
+    """
+    CURSOR.execute(sql, (hut.id,))
+    hut.delete()
+    print(f'         {hut.name} has been deleted')
 
+def print_amenity_details(amenity):
+    print(f'             Amenity name: {amenity.name}')
+    print(f'             Amenity description: {amenity.description}')
+
+def update_amenity_details(amenity):
+    print("        Please enter the amenity details you would like to update below.")
+    print("        If you would not like to change the amenity attribute, press enter to move onto the next option.")
+    name = input("        Please enter the new amenity name: ")
+    description = input("        Please enter the new description: ")
+    if name != "":
+        amenity.name = name
+    if description != "":
+        amenity.description = description
+    amenity.update()
+    print("")
+    print(f'         Amenity "{amenity.name}" has been successfully updated!')
+
+def print_huts_with_chosen_amenity(amenity):
+    # query hut_amenities for rows that match the given amenity id
+    sql = """
+        SELECT hut_id
+        FROM hut_amenities
+        WHERE amenity_id = ? 
+        """
+    rows = CURSOR.execute(sql, (amenity.id,)).fetchall()
+    if len(rows):
+        print("")
+        for row in rows:
+            hut = Hut.find_by_id(row[0])
+            print(f'             {hut.name}: {hut.state}, {hut.system}')
+    else:
+        print("")
+        print('             No huts with this amenity found. Keep dreaming!')
+
+def delete_amenity(amenity):
+    sql = """
+    DELETE
+    FROM hut_amenities
+    WHERE amenity_id = ?
+    """
+    CURSOR.execute(sql, (amenity.id,))
+    amenity.delete()
+    print(f'         {amenity.name} has been deleted')

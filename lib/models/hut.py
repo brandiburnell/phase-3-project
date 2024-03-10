@@ -203,6 +203,17 @@ class Hut:
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_id(cls, id):
+        """ Return hut with the matching name """
+        sql = """
+            SELECT *
+            FROM huts
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
 
     
