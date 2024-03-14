@@ -22,7 +22,8 @@ from helpers import (
     update_amenity_details,
     print_huts_with_chosen_amenity,
     delete_amenity,
-    select_a_hut
+    select_a_hut,
+    select_amenity
 )
 
 
@@ -86,7 +87,8 @@ def main():
                     print_amenities()
                 # specific amenity menu
                 elif amenity_menu_choice == "2":
-                    amenity_found = find_amenity_by_name()
+                    print_amenities()
+                    amenity_found = select_amenity()
                     if amenity_found != None:
                         while True:
                             print("")

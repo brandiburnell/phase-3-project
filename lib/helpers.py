@@ -60,10 +60,24 @@ def delete_hut():
 
 def print_amenities():
     amenities = Amenity.get_all()
-    for amenity in amenities:
+    for index, amenity in enumerate(amenities):
+        print(f'             {index + 1}')
         print(f'             Amenity name: {amenity.name.title()}')
         print(f'             Amenity descripton: {amenity.description}')
         print("")
+
+def select_amenity():
+    num_selected = int(input("Enter the number corresponding to the amenity you would like to select: "))
+    amenities = Amenity.get_all()
+    try: 
+        amenity_selected = amenities[num_selected - 1]
+        return amenity_selected
+    except Exception as exc:
+        print("")
+        print(f'     Uh oh! Amenity "{num_selected}" not found :( ')
+        print("")
+        print('Please select an option below: ')
+        return None
 
 def find_amenity_by_name():
     name = input("Enter the name of the amenity: ")
@@ -204,21 +218,14 @@ def update_hut_details(hut):
 
 def print_hut_ameities(hut):
     # query hut_amenities for rows that match the given hut id
-    sql = """
-        SELECT amenity_id
-        FROM hut_amenities
-        WHERE hut_id = ? 
-        """
-    rows = CURSOR.execute(sql, (hut.id,)).fetchall()
-    if len(rows):
-        print("")
-        for row in rows:
-            amenity = Amenity.find_by_id(row[0])
+    hut_amenities = hut.get_hut_amenities()
+    if hut_amenities != None:
+        for amenity in hut_amenities:
             print(f'             {amenity.name.title()}: {amenity.description}')
     else:
         print("")
         print('             No amenities found. Sounds like camping!')
-
+        
 def delete_hut(hut):
     sql = """
     DELETE
@@ -257,18 +264,12 @@ def update_amenity_details(amenity):
         print(f'         Amenity "{amenity.name.title()}" has been successfully updated!')
 
 def print_huts_with_chosen_amenity(amenity):
-    # query hut_amenities for rows that match the given amenity id
-    sql = """
-        SELECT hut_id
-        FROM hut_amenities
-        WHERE amenity_id = ? 
-        """
-    rows = CURSOR.execute(sql, (amenity.id,)).fetchall()
-    if len(rows):
-        print("")
-        for row in rows:
-            hut = Hut.find_by_id(row[0])
+    huts = amenity.get_huts_with_this_amenity() 
+    print("")
+    if huts != None:
+        for hut in huts:
             print(f'             {hut.name.title()}: {hut.state}, {hut.system.title()}')
+            print("")
     else:
         print("")
         print('             No huts with this amenity found. Keep dreaming!')

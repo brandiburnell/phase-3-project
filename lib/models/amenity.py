@@ -157,10 +157,21 @@ class Amenity:
         row = CURSOR.execute(sql, (name.lower(),)).fetchone()
         return cls.instance_from_db(row) if row else None
     
-    ##### idk bruh
-    def huts(self):
+    def get_huts_with_this_amenity(self):
         """ Return list of huts associated with each amenity """
         from models.hut import Hut
+        # query hut_amenities for rows that match the given amenity id
         sql = """
-            SELECT * FROM amenities
-            WHERE amenity_id"""
+            SELECT hut_id
+            FROM hut_amenities
+            WHERE amenity_id = ? 
+            """
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        if len(rows):
+            huts = set()
+            for row in rows:
+                hut = Hut.find_by_id(row[0])
+                huts.add(hut)
+            return huts
+        else:
+            return None

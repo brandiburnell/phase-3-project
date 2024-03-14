@@ -1,5 +1,4 @@
 from models.__init__ import CURSOR, CONN
-from models.hut_amenity import HutAmenity
 
 class Hut:
 
@@ -213,6 +212,24 @@ class Hut:
         """
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
+    def get_hut_amenities(self):
+        from models.amenity import Amenity
+        # query hut_amenities for rows that match the given hut id
+        sql = """
+            SELECT amenity_id
+            FROM hut_amenities
+            WHERE hut_id = ? 
+            """
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        if len(rows):
+            amenities = set()
+            for row in rows:
+                amenity = Amenity.find_by_id(row[0])
+                amenities.add(amenity)
+            return amenities
+        else:
+            return None
 
 
     
