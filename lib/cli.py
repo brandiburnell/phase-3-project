@@ -21,7 +21,8 @@ from helpers import (
     print_amenity_details,
     update_amenity_details,
     print_huts_with_chosen_amenity,
-    delete_amenity
+    delete_amenity,
+    select_a_hut
 )
 
 
@@ -42,7 +43,8 @@ def main():
                     print_hut_data()
                 # individual hut menu
                 elif hut_menu_choice == "2":
-                    hut_found = find_hut_by_name()
+                    print_hut_data()
+                    hut_found = select_a_hut()
                     if hut_found != None:
                         while True:
                             print("")
@@ -57,7 +59,6 @@ def main():
                                 update_hut_details(hut_found)
                             elif single_hut_menu_choice == "3":
                                 print_hut_ameities(hut_found)
-                            ###### ASK TOMMY HOW TO HANDLE ERRORS
                             elif single_hut_menu_choice == "4":
                                 add_amenity_to_hut(hut_found)
                             elif single_hut_menu_choice == "5":
@@ -133,7 +134,7 @@ def hut_menu():
     print("----- Hut Menu -----")
     print("0. Exit Hut Menu")
     print("1. View all hut data")
-    print("2. Select a hut by name")
+    print("2. Select a hut")
     print("3. Create a new hut")
     print("4. Exit program")
     print("")

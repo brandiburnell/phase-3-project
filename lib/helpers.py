@@ -6,10 +6,23 @@ from models.hut_amenity import HutAmenity
 
 def print_hut_data():
     huts = Hut.get_all()
-    for hut in huts:
-        print(f'•{hut.name.title()}, {hut.system.title()}, {hut.state}.')
+    for index, hut in enumerate(huts):
+        print(f'{index+1} •{hut.name.title()}, {hut.system.title()}, {hut.state}.')
         print("  Elevation: {:,}".format(hut.elevation) + f' ft, Website: {hut.url}•')
         print("")
+
+def select_a_hut():
+    num_selected = int(input("Enter the number corresponding to the hut you would like to select: "))
+    huts = Hut.get_all()
+    try: 
+        hut_selected = huts[num_selected - 1]
+        return hut_selected
+    except Exception as exc:
+        print("")
+        print(f'     Uh oh! Hut "{num_selected}" not found :( ')
+        print("")
+        print('Please select an option below: ')
+        return None
 
 def find_hut_by_name():
     name = input("Enter the hut's name: ").lower()
