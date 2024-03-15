@@ -120,15 +120,17 @@ def add_amenity_to_hut(hut):
     if new_or_existing == "existing":
         print("         Please choose an amenity to add from the list below: ")
         print_amenities()
-        amenity_chosen = input("        Enter the name of the amenity you would like to add to the hut: ")
-        amenity = Amenity.find_by_name(amenity_chosen)
+        num_selected = int(input("        Enter the number of the amenity you would like to add to the hut: "))
+        amenities = Amenity.get_all()
+        amenity_selected = {}
         try:
-            HutAmenity.create(hut.id, amenity.id)
+            amenity_selected = amenities[num_selected - 1]  
+            HutAmenity.create(hut.id, amenity_selected.id)
             print("")
-            print(f'            {amenity.name.title()} has been added to {hut.name.title()}')
+            print(f'            {amenity_selected.name.title()} has been added to {hut.name.title()}')
         except Exception as exc:
             print("")
-            print(f'             Amenity "{amenity_chosen}" not found')
+            print(f'             Amenity "{amenity_selected.name.title()}" not found')
     elif new_or_existing == "new":
         amenity = create_new_amenity()
         try:
