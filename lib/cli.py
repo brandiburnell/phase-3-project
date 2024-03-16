@@ -157,7 +157,7 @@ def amenity_menu():
     print("----- Amenity Menu -----")
     print("0. Exit Amenity Menu")
     print("1. View all amenity data")
-    print("2. Select an amenity by name")
+    print("2. Select an amenity")
     print("3. Create a new amenity")
     print("4. Exit program")
     print("")

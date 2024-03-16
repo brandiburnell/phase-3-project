@@ -145,22 +145,24 @@ def add_amenity_to_hut(hut):
         print("             Invalid choice")
 
 def delete_amenity_from_hut(hut):
-    amenity_name = input('         Enter the name of the amenity you woule like to delete from the hut: ')
-    try:
-        amenity = Amenity.find_by_name(amenity_name)
-        sql = """
-            DELETE 
-            FROM hut_amenities
-            WHERE hut_id = ? 
-                AND amenity_id = ?
-        """
-        CURSOR.execute(sql, (hut.id, amenity.id))
-        CONN.commit()
-
+    hut_amenities = hut.get_hut_amenities()
+    counter = 0
+    for amenity in hut_amenities:
+        print(f'            {amenity.name.title()}')
+        print(f'            {amenity.description}')
         print("")
-        print(f'            {amenity.name.title()} has been removed from {hut.name.title()}')
+
+    amenity_name = input('         Enter the name of the amenity  you would like to delete from the hut: ')
+    amenity_selected = {}
+    try:
+        amenity_selected = Amenity.find_by_name(amenity_name)
+        hut_amenity = HutAmenity.find_by_hut_and_amenity(hut.id, amenity_selected.id)
+        hut_amenity.delete()
+        print("")
+        print(f'            {amenity_selected.name.title()} has been removed from {hut.name.title()}')
     except Exception as exc:
-        print(f'            "{amenity_name}" not found. Please try again')
+        print("")
+        print(f'            Error deleting amenity. Please try again')
 
 def exit_program():
     print("Goodbye!")
@@ -229,12 +231,7 @@ def print_hut_ameities(hut):
         print('             No amenities found. Sounds like camping!')
         
 def delete_hut(hut):
-    sql = """
-    DELETE
-    FROM hut_amenities
-    WHERE hut_id = ?
-    """
-    CURSOR.execute(sql, (hut.id,))
+    HutAmenity.delete_hut(hut.id)
     hut.delete()
     print(f'         {hut.name.title()} has been deleted')
 
@@ -277,11 +274,6 @@ def print_huts_with_chosen_amenity(amenity):
         print('             No huts with this amenity found. Keep dreaming!')
 
 def delete_amenity(amenity):
-    sql = """
-    DELETE
-    FROM hut_amenities
-    WHERE amenity_id = ?
-    """
-    CURSOR.execute(sql, (amenity.id,))
+    HutAmenity.delete_amenity(amenity.id)
     amenity.delete()
     print(f'         {amenity.name.title()} has been deleted')

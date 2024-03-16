@@ -132,5 +132,44 @@ class HutAmenity:
 
         return [cls.instance_from_db(row) for row in rows]
      
-    def print(self):
-        print(type(self.amenity_id))
+    @classmethod
+    def find_by_hut_and_amenity(cls, hut_id, amenity_id):
+        """ Return a hut_amenity instance with a specific hut and amenity"""
+        sql = """
+            SELECT *
+            FROM hut_amenities
+            WHERE hut_id = ?
+                AND amenity_id = ?
+        """
+        row = CURSOR.execute(sql, (hut_id, amenity_id)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def delete_hut(cls, hut_id):
+        sql = """
+            DELETE
+            FROM hut_amenities
+            WHERE hut_id = ?
+        """
+        CURSOR.execute(sql, (hut_id,))
+        CONN.commit()
+        
+        for key, value in cls.all.items():
+            if key == "hut_id" and value == hut_id:
+                del cls.all.items[key]
+
+    @classmethod
+    def delete_amenity(cls, amenity_id):
+        sql = """
+            DELETE
+            FROM hut_amenities
+            WHERE amenity_id = ?
+        """
+        CURSOR.execute(sql, (amenity_id,))
+        CONN.commit()
+        
+        for key, value in cls.all.items():
+            if key == "amenity_id" and value == amenity_id:
+                del cls.all.items[key]
+
+
