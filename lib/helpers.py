@@ -12,9 +12,10 @@ def print_hut_data():
         print("")
 
 def select_a_hut():
-    num_selected = int(input("Enter the number corresponding to the hut you would like to select: "))
+    num_selected = input("Enter the number corresponding to the hut you would like to select: ")
     huts = Hut.get_all()
     try: 
+        num_selected = int(num_selected)
         hut_selected = huts[num_selected - 1]
         return hut_selected
     except Exception as exc:
@@ -67,9 +68,10 @@ def print_amenities():
         print("")
 
 def select_amenity():
-    num_selected = int(input("Enter the number corresponding to the amenity you would like to select: "))
+    num_selected = input("Enter the number corresponding to the amenity you would like to select: ")
     amenities = Amenity.get_all()
     try: 
+        num_selected = int(num_selected)
         amenity_selected = amenities[num_selected - 1]
         return amenity_selected
     except Exception as exc:
@@ -176,7 +178,7 @@ def print_hut_details(hut):
     print(f'             Hut name: {hut.name.title()}')
     print(f'             Hut state: {hut.state}')
     print(f'             Hut system: {hut.system.title()}')
-    print("             Hut Elevation: {:,}".format(hut.elevation))
+    print("             Hut Elevation: {:,} ft".format(hut.elevation))
     print(f'             Hut website address: {hut.url}')
 
 def update_hut_details(hut):
